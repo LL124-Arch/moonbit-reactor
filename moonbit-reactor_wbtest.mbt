@@ -156,3 +156,66 @@ test "included example cases produce usable positive values" {
   assert_true(series > 0.0)
   assert_true(boundary.max_safe_volume > 0.0)
 }
+
+///|
+test "validation report catches invalid feed and reaction inputs" {
+  let reaction = Reaction::new(name="", order=First, k_ref=0.0)
+  let feed = Feed::new(
+    concentration=-1.0,
+    volumetric_flow=0.0,
+    temperature=-2.0,
+  )
+  let report = validate_design_inputs(reaction, feed, -1.0)
+  assert_true(report.has_errors())
+  assert_true(report.count(Error) >= 4)
+  assert_true(report.count(Warning) >= 1)
+}
+
+///|
+test "reactor train improves conversion over one CSTR at same volume" {
+  let reaction = Reaction::new(name="A -> B", order=First, k_ref=0.2)
+  let feed = Feed::new(
+    concentration=1.0,
+    volumetric_flow=1.0,
+    temperature=300.0,
+  )
+  let train = equal_volume_cstr_train(4, 10.0)
+  let network = run_network(reaction, feed, train)
+  let single = design_cstr(reaction, feed, 10.0)
+  assert_true(network.final_conversion > single.conversion)
+  assert_eq(network.stages.length(), 4)
+}
+
+///|
+test "markdown and csv reports include stable headers" {
+  let point = ethyl_acetate_saponification()
+  let md = point.to_markdown()
+  let sweep = sweep_cstr(
+    Reaction::new(name="A -> B", order=First, k_ref=0.1),
+    Feed::new(concentration=1.0, volumetric_flow=1.0, temperature=300.0),
+    5.0,
+    3,
+  )
+  let csv = sweep_to_csv(sweep)
+  assert_true(md.contains("| field | value |"))
+  assert_true(csv.contains("volume,conversion,outlet_temperature"))
+}
+
+///|
+test "grid optimizer returns feasible reactor choice" {
+  let reaction = Reaction::new(name="A -> B", order=First, k_ref=0.15)
+  let feed = Feed::new(
+    concentration=1.0,
+    volumetric_flow=1.0,
+    temperature=300.0,
+  )
+  let result = minimize_volume_for_conversion(
+    reaction,
+    feed,
+    SearchRange::new(min=0.0, max=30.0, steps=61),
+    0.8,
+  )
+  assert_true(result.feasible)
+  assert_true(result.volume > 0.0)
+  assert_true(result.conversion >= 0.8)
+}
