@@ -1,0 +1,9 @@
+// import {
+//   "LL124-Arch/moonbit-reactor" @lib,
+// }
+
+pkgtype(kind: "executable")
+
+import {
+  "LL124-Arch/moonbit-reactor" @reactor,
+}
