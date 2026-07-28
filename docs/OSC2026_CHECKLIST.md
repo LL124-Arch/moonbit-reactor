@@ -19,7 +19,7 @@ This repository is shaped for the MoonBit OSC2026 open-source ecosystem competit
 - [x] Apache-2.0 license exists.
 - [x] README describes goals, scope, usage, validation, and roadmap.
 - [x] Source statement avoids fake contributors.
-- [ ] GitHub remote URL filled into `moon.mod`.
+- [x] GitHub remote URL filled into `moon.mod`.
 - [ ] GitLink remote URL filled into project notes after creation.
 - [ ] Mooncakes package published after final repository URLs are stable.
 
