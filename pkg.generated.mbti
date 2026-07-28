@@ -30,6 +30,10 @@ pub fn design_cstr(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange
 
 pub fn design_pfr(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> DesignPoint
 
+pub fn equal_volume_cstr_train(Int, Double, thermal_mode? : ThermalMode) -> Array[ReactorStage]
+
+pub fn equal_volume_pfr_train(Int, Double, thermal_mode? : ThermalMode) -> Array[ReactorStage]
+
 pub fn ethyl_acetate_saponification() -> DesignPoint
 
 pub fn euler_integrate(Double, Double, Int, (Double, Double) -> Double) -> Double
@@ -40,13 +44,21 @@ pub fn find_temperature_boundary(Reaction, Feed, Double, Double, thermal_mode? :
 
 pub fn first_order_series_example() -> Double
 
+pub fn format_double(Double, digits? : Int) -> String
+
 pub fn heat_removed_by_jacket(HeatExchange, Double) -> Double
 
 pub fn integrate_trapezoid(Double, Double, Int, (Double) -> Double) -> Double
 
+pub fn maximize_conversion_under_temperature(Reaction, Feed, SearchRange, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> OptimizationResult
+
+pub fn minimize_volume_for_conversion(Reaction, Feed, SearchRange, Double, kind? : ReactorKind) -> OptimizationResult
+
 pub fn natural_log(Double) -> Double
 
 pub fn nearly_equal(Double, Double, tolerance? : Double) -> Bool
+
+pub fn network_to_markdown(NetworkResult) -> String
 
 pub fn package_name() -> String
 
@@ -56,13 +68,23 @@ pub fn required_cstr_volume(Reaction, Feed, Double, thermal_mode? : ThermalMode,
 
 pub fn required_pfr_volume(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Double
 
+pub fn run_network(Reaction, Feed, ArrayView[ReactorStage]) -> NetworkResult
+
 pub fn selectivity_series_first_order(Double, Double, Double) -> Double
 
 pub fn sweep_cstr(Reaction, Feed, Double, Int, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Array[ReactorSweepPoint]
 
 pub fn sweep_pfr(Reaction, Feed, Double, Int, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Array[ReactorSweepPoint]
 
+pub fn sweep_to_csv(ArrayView[ReactorSweepPoint]) -> String
+
 pub fn temperature_for_mode(ThermalMode, Feed, Reaction, Double, HeatExchange?) -> Double
+
+pub fn validate_design_inputs(Reaction, Feed, Double) -> ValidationReport
+
+pub fn validate_feed(Feed) -> ValidationReport
+
+pub fn validate_reaction(Reaction) -> ValidationReport
 
 // Errors
 
@@ -85,6 +107,8 @@ pub(all) struct DesignPoint {
   heat_removed : Double
   rate_at_outlet : Double
 } derive(ToJson, @debug.Debug)
+pub fn DesignPoint::summary_rows(Self) -> Array[ReportColumn]
+pub fn DesignPoint::to_markdown(Self) -> String
 
 pub(all) struct Feed {
   concentration : Double
@@ -107,6 +131,22 @@ pub(all) enum KineticOrder {
 } derive(Eq, ToJson, @debug.Debug)
 pub fn KineticOrder::to_string(Self) -> String
 
+pub(all) struct NetworkResult {
+  stages : Array[DesignPoint]
+  final_conversion : Double
+  final_concentration : Double
+  final_temperature : Double
+  total_volume : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct OptimizationResult {
+  volume : Double
+  conversion : Double
+  temperature : Double
+  objective : Double
+  feasible : Bool
+} derive(ToJson, @debug.Debug)
+
 pub(all) struct Reaction {
   name : String
   order : KineticOrder
@@ -126,10 +166,25 @@ pub(all) enum ReactorKind {
 } derive(Eq, ToJson, @debug.Debug)
 pub fn ReactorKind::to_string(Self) -> String
 
+pub(all) struct ReactorStage {
+  kind : ReactorKind
+  volume : Double
+  thermal_mode : ThermalMode
+  exchange : HeatExchange?
+} derive(ToJson, @debug.Debug)
+pub fn ReactorStage::batch(time~ : Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Self
+pub fn ReactorStage::cstr(volume~ : Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Self
+pub fn ReactorStage::pfr(volume~ : Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Self
+
 pub(all) struct ReactorSweepPoint {
   volume : Double
   conversion : Double
   outlet_temperature : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct ReportColumn {
+  name : String
+  value : String
 } derive(ToJson, @debug.Debug)
 
 pub(all) struct SafetyBoundary {
@@ -139,6 +194,13 @@ pub(all) struct SafetyBoundary {
   conversion_at_boundary : Double
   limited_by_temperature : Bool
 } derive(ToJson, @debug.Debug)
+
+pub(all) struct SearchRange {
+  min : Double
+  max : Double
+  steps : Int
+} derive(ToJson, @debug.Debug)
+pub fn SearchRange::new(min~ : Double, max~ : Double, steps~ : Int) -> Self
 
 pub(all) struct SolverSettings {
   tolerance : Double
@@ -153,6 +215,29 @@ pub(all) enum ThermalMode {
   NonIsothermal
 } derive(Eq, ToJson, @debug.Debug)
 pub fn ThermalMode::to_string(Self) -> String
+
+pub(all) enum ValidationLevel {
+  Info
+  Warning
+  Error
+} derive(Eq, ToJson, @debug.Debug)
+pub fn ValidationLevel::to_string(Self) -> String
+
+pub(all) struct ValidationMessage {
+  level : ValidationLevel
+  field : String
+  message : String
+} derive(ToJson, @debug.Debug)
+pub fn ValidationMessage::to_line(Self) -> String
+
+pub(all) struct ValidationReport {
+  messages : Array[ValidationMessage]
+} derive(ToJson, @debug.Debug)
+pub fn ValidationReport::count(Self, ValidationLevel) -> Int
+pub fn ValidationReport::has_errors(Self) -> Bool
+pub fn ValidationReport::new() -> Self
+pub fn ValidationReport::push(Self, ValidationLevel, String, String) -> Self
+pub fn ValidationReport::to_text(Self) -> String
 
 // Type aliases
 

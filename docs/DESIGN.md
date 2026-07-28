@@ -18,6 +18,10 @@ The main design functions assume constant density and a single limiting reactant
 
 The package uses a small bisection solver for robust scalar design equations. Bisection is slower than Newton methods, but the monotonic design equations in this package make bracketing easy to reason about. Trapezoid integration is used for PFR design equations where the rate depends on conversion through temperature.
 
+## Engineering workflow helpers
+
+The validation module reports suspicious or invalid inputs without forcing a single application-level error policy. The network module lets users compare reactor trains, such as several equal-volume CSTRs against one large CSTR. The reporting module keeps CLI and notebook-like workflows simple by producing Markdown tables and CSV sweep output from the same typed design objects. The optimizer module is intentionally a grid search: it is predictable, easy to test, and sufficient for early feasibility scans.
+
 ## Extension plan
 
 Future work should add new kinetics by extending the public `Reaction` representation or introducing a callback-based rate model. Larger changes should keep existing concrete types stable and use `moon info` to review public API changes before release.

@@ -19,6 +19,10 @@ Before selecting this topic, I checked mooncakes.io with reactor-related keyword
 - Required volume solvers for target conversion.
 - Bisection root finder and trapezoid/Euler numerical helpers.
 - Reactor sweep utilities for plotting conversion or temperature profiles.
+- Input validation reports for invalid or suspicious design parameters.
+- Reactor-stage networks for CSTR/PFR train comparison.
+- Markdown and CSV-style reporting helpers.
+- Grid-search utilities for constrained early design choices.
 - Example cases: ethyl acetate saponification, first-order series reaction, and exothermic CSTR safety boundary.
 
 ## Quick start
@@ -93,6 +97,11 @@ Main functions:
 - `sweep_cstr`
 - `sweep_pfr`
 - `find_temperature_boundary`
+- `run_network`
+- `equal_volume_cstr_train`
+- `sweep_to_csv`
+- `maximize_conversion_under_temperature`
+- `minimize_volume_for_conversion`
 
 ## Validation
 
