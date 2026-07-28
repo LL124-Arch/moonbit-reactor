@@ -1,0 +1,160 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "LL124-Arch/moonbit-reactor"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn absolute(Double) -> Double
+
+pub fn adiabatic_temperature(Feed, Reaction, Double) -> Double
+
+pub fn batch_conversion_isothermal(Reaction, Feed, Double) -> Double
+
+pub fn bisect(Double, Double, (Double) -> Double, settings? : SolverSettings) -> BracketResult
+
+pub fn clamp_conversion(Double) -> Double
+
+pub fn concentration_from_conversion(Feed, Double) -> Double
+
+pub fn conversion_time_first_order(Double, Double) -> Double
+
+pub fn cstr_conversion_isothermal(Reaction, Feed, Double) -> Double
+
+pub fn demo_report() -> String
+
+pub fn design_batch(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> DesignPoint
+
+pub fn design_cstr(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> DesignPoint
+
+pub fn design_pfr(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> DesignPoint
+
+pub fn ethyl_acetate_saponification() -> DesignPoint
+
+pub fn euler_integrate(Double, Double, Int, (Double, Double) -> Double) -> Double
+
+pub fn exothermic_cstr_boundary() -> SafetyBoundary
+
+pub fn find_temperature_boundary(Reaction, Feed, Double, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> SafetyBoundary
+
+pub fn first_order_series_example() -> Double
+
+pub fn heat_removed_by_jacket(HeatExchange, Double) -> Double
+
+pub fn integrate_trapezoid(Double, Double, Int, (Double) -> Double) -> Double
+
+pub fn natural_log(Double) -> Double
+
+pub fn nearly_equal(Double, Double, tolerance? : Double) -> Bool
+
+pub fn package_name() -> String
+
+pub fn pfr_conversion_isothermal(Reaction, Feed, Double) -> Double
+
+pub fn required_cstr_volume(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Double
+
+pub fn required_pfr_volume(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Double
+
+pub fn selectivity_series_first_order(Double, Double, Double) -> Double
+
+pub fn sweep_cstr(Reaction, Feed, Double, Int, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Array[ReactorSweepPoint]
+
+pub fn sweep_pfr(Reaction, Feed, Double, Int, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Array[ReactorSweepPoint]
+
+pub fn temperature_for_mode(ThermalMode, Feed, Reaction, Double, HeatExchange?) -> Double
+
+// Errors
+
+// Types and methods
+pub(all) struct BracketResult {
+  root : Double
+  residual : Double
+  iterations : Int
+  converged : Bool
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct DesignPoint {
+  kind : ReactorKind
+  thermal_mode : ThermalMode
+  volume : Double
+  residence_time : Double
+  conversion : Double
+  outlet_concentration : Double
+  outlet_temperature : Double
+  heat_removed : Double
+  rate_at_outlet : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct Feed {
+  concentration : Double
+  volumetric_flow : Double
+  temperature : Double
+  heat_capacity_flow : Double
+} derive(ToJson, @debug.Debug)
+pub fn Feed::new(concentration~ : Double, volumetric_flow~ : Double, temperature~ : Double, heat_capacity_flow? : Double) -> Self
+
+pub(all) struct HeatExchange {
+  ua : Double
+  coolant_temperature : Double
+} derive(ToJson, @debug.Debug)
+pub fn HeatExchange::new(ua~ : Double, coolant_temperature~ : Double) -> Self
+
+pub(all) enum KineticOrder {
+  Zero
+  First
+  Second
+} derive(Eq, ToJson, @debug.Debug)
+pub fn KineticOrder::to_string(Self) -> String
+
+pub(all) struct Reaction {
+  name : String
+  order : KineticOrder
+  k_ref : Double
+  activation_energy : Double
+  reference_temperature : Double
+  reaction_enthalpy : Double
+} derive(ToJson, @debug.Debug)
+pub fn Reaction::new(name~ : String, order~ : KineticOrder, k_ref~ : Double, activation_energy? : Double, reference_temperature? : Double, reaction_enthalpy? : Double) -> Self
+pub fn Reaction::rate(Self, Double, Double) -> Double
+pub fn Reaction::rate_constant(Self, Double) -> Double
+
+pub(all) enum ReactorKind {
+  Cstr
+  Pfr
+  Batch
+} derive(Eq, ToJson, @debug.Debug)
+pub fn ReactorKind::to_string(Self) -> String
+
+pub(all) struct ReactorSweepPoint {
+  volume : Double
+  conversion : Double
+  outlet_temperature : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct SafetyBoundary {
+  max_safe_volume : Double
+  max_safe_residence_time : Double
+  hot_spot_temperature : Double
+  conversion_at_boundary : Double
+  limited_by_temperature : Bool
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct SolverSettings {
+  tolerance : Double
+  max_iterations : Int
+} derive(ToJson, @debug.Debug)
+pub fn SolverSettings::default() -> Self
+pub fn SolverSettings::loose() -> Self
+
+pub(all) enum ThermalMode {
+  Isothermal
+  Adiabatic
+  NonIsothermal
+} derive(Eq, ToJson, @debug.Debug)
+pub fn ThermalMode::to_string(Self) -> String
+
+// Type aliases
+
+// Traits
+
