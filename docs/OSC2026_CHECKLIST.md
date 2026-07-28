@@ -20,8 +20,13 @@ This repository is shaped for the MoonBit OSC2026 open-source ecosystem competit
 - [x] README describes goals, scope, usage, validation, and roadmap.
 - [x] Source statement avoids fake contributors.
 - [x] GitHub remote URL filled into `moon.mod`.
-- [ ] GitLink remote URL filled into project notes after creation.
+- [x] GitLink remote URL filled into project notes after creation.
 - [ ] Mooncakes package published after final repository URLs are stable.
+
+## Repository links
+
+- GitHub: https://github.com/LL124-Arch/moonbit-reactor
+- GitLink: https://www.gitlink.org.cn/lll15362196148/moonbit-reactor
 
 ## Source and authorship statement
 
