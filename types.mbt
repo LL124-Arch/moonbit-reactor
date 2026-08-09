@@ -71,6 +71,22 @@ pub(all) struct BracketResult {
 } derive(Debug, ToJson)
 
 ///|
+pub(all) enum SolverStatus {
+  Converged
+  BracketFailure
+  IterationLimit
+  InvalidRange
+} derive(Debug, Eq, ToJson)
+
+///|
+pub(all) struct SolverReport {
+  status : SolverStatus
+  root : Double
+  residual : Double
+  iterations : Int
+} derive(Debug, ToJson)
+
+///|
 pub(all) struct ReactorSweepPoint {
   volume : Double
   conversion : Double

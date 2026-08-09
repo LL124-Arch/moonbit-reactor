@@ -14,9 +14,15 @@ pub fn batch_conversion_isothermal(Reaction, Feed, Double) -> Double
 
 pub fn bisect(Double, Double, (Double) -> Double, settings? : SolverSettings) -> BracketResult
 
+pub fn bisect_report(Double, Double, (Double) -> Double, settings? : SolverSettings) -> SolverReport
+
 pub fn clamp_conversion(Double) -> Double
 
 pub fn concentration_from_conversion(Feed, Double) -> Double
+
+pub fn conversion_from_concentration(Feed, Double) -> Double
+
+pub fn conversion_is_physical(Double) -> Bool
 
 pub fn conversion_time_first_order(Double, Double) -> Double
 
@@ -50,6 +56,8 @@ pub fn heat_removed_by_jacket(HeatExchange, Double) -> Double
 
 pub fn integrate_trapezoid(Double, Double, Int, (Double) -> Double) -> Double
 
+pub fn integrate_trapezoid_report(Double, Double, Int, (Double) -> Double) -> SolverReport
+
 pub fn maximize_conversion_under_temperature(Reaction, Feed, SearchRange, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> OptimizationResult
 
 pub fn minimize_volume_for_conversion(Reaction, Feed, SearchRange, Double, kind? : ReactorKind) -> OptimizationResult
@@ -68,9 +76,13 @@ pub fn required_cstr_volume(Reaction, Feed, Double, thermal_mode? : ThermalMode,
 
 pub fn required_pfr_volume(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Double
 
+pub fn residence_time(Feed, Double) -> Double
+
 pub fn run_network(Reaction, Feed, ArrayView[ReactorStage]) -> NetworkResult
 
 pub fn selectivity_series_first_order(Double, Double, Double) -> Double
+
+pub fn space_time(Feed, Double) -> Double
 
 pub fn sweep_cstr(Reaction, Feed, Double, Int, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Array[ReactorSweepPoint]
 
@@ -85,6 +97,8 @@ pub fn validate_design_inputs(Reaction, Feed, Double) -> ValidationReport
 pub fn validate_feed(Feed) -> ValidationReport
 
 pub fn validate_reaction(Reaction) -> ValidationReport
+
+pub fn yield_from_conversion_selectivity(Double, Double) -> Double
 
 // Errors
 
@@ -202,12 +216,26 @@ pub(all) struct SearchRange {
 } derive(ToJson, @debug.Debug)
 pub fn SearchRange::new(min~ : Double, max~ : Double, steps~ : Int) -> Self
 
+pub(all) struct SolverReport {
+  status : SolverStatus
+  root : Double
+  residual : Double
+  iterations : Int
+} derive(ToJson, @debug.Debug)
+
 pub(all) struct SolverSettings {
   tolerance : Double
   max_iterations : Int
 } derive(ToJson, @debug.Debug)
 pub fn SolverSettings::default() -> Self
 pub fn SolverSettings::loose() -> Self
+
+pub(all) enum SolverStatus {
+  Converged
+  BracketFailure
+  IterationLimit
+  InvalidRange
+} derive(Eq, ToJson, @debug.Debug)
 
 pub(all) enum ThermalMode {
   Isothermal

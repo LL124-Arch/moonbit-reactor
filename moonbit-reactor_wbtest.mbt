@@ -261,3 +261,26 @@ test "boundary cases remain physical" {
   assert_eq(sweep_pfr(reaction, feed, 5.0, 0).length(), 0)
   assert_eq(sweep_pfr(reaction, feed, 5.0, 1).length(), 1)
 }
+
+///|
+test "solver report distinguishes bracket failures" {
+  let failure = bisect_report(0.0, 1.0, fn(x) { x * x + 1.0 })
+  assert_eq(failure.status, BracketFailure)
+  let success = bisect_report(0.0, 2.0, fn(x) { x * x - 2.0 })
+  assert_eq(success.status, Converged)
+  assert_close(success.root, 1.41421356, 1.0e-6)
+}
+
+///|
+test "solver report handles iteration and integration boundaries" {
+  let limited = bisect_report(0.0, 2.0, fn(x) { x * x - 2.0 }, settings={
+    tolerance: 1.0e-20,
+    max_iterations: 1,
+  })
+  assert_eq(limited.status, IterationLimit)
+  let invalid = integrate_trapezoid_report(0.0, 1.0, 0, fn(x) { x })
+  assert_eq(invalid.status, InvalidRange)
+  let reversed = integrate_trapezoid_report(1.0, 0.0, 100, fn(x) { x })
+  assert_eq(reversed.status, Converged)
+  assert_true(reversed.root < 0.0)
+}
