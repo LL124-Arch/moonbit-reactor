@@ -138,7 +138,7 @@ fn make_design_point(
     kind,
     thermal_mode: mode,
     volume,
-    residence_time: volume / feed.volumetric_flow.max(1.0e-12),
+    residence_time: residence_time(feed, volume),
     conversion: x,
     outlet_concentration: cout,
     outlet_temperature: tout,

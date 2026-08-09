@@ -48,8 +48,20 @@ fn sweep_reactor(
   max_volume : Double,
   points : Int,
 ) -> Array[ReactorSweepPoint] {
-  let n = points.max(2)
   let out : Array[ReactorSweepPoint] = []
+  if points <= 0 {
+    return out
+  }
+  if points == 1 {
+    let p = design(max_volume)
+    out.push({
+      volume: max_volume,
+      conversion: p.conversion,
+      outlet_temperature: p.outlet_temperature,
+    })
+    return out
+  }
+  let n = points
   for i in 0..<n {
     let v = max_volume * Double::from_int(i) / Double::from_int(n - 1)
     let p = design(v)

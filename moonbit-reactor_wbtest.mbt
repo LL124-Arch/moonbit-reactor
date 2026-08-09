@@ -219,3 +219,45 @@ test "grid optimizer returns feasible reactor choice" {
   assert_true(result.volume > 0.0)
   assert_true(result.conversion >= 0.8)
 }
+
+///|
+test "engineering metrics preserve design point identities" {
+  let reaction = Reaction::new(name="A -> B", order=First, k_ref=0.2)
+  let feed = Feed::new(
+    concentration=1.0,
+    volumetric_flow=2.0,
+    temperature=300.0,
+  )
+  let point = design_pfr(reaction, feed, 4.0)
+  assert_true(nearly_equal(space_time(feed, point.volume), 2.0))
+  assert_true(
+    nearly_equal(point.residence_time, residence_time(feed, point.volume)),
+  )
+  assert_true(
+    nearly_equal(
+      yield_from_conversion_selectivity(point.conversion, 1.0),
+      point.conversion,
+    ),
+  )
+  assert_true(
+    nearly_equal(
+      conversion_from_concentration(feed, point.outlet_concentration),
+      point.conversion,
+    ),
+  )
+  assert_true(conversion_is_physical(point.conversion))
+}
+
+///|
+test "boundary cases remain physical" {
+  let reaction = Reaction::new(name="A -> B", order=First, k_ref=0.2)
+  let feed = Feed::new(
+    concentration=1.0,
+    volumetric_flow=1.0,
+    temperature=300.0,
+  )
+  assert_eq(design_pfr(reaction, feed, 0.0).conversion, 0.0)
+  assert_true(design_pfr(reaction, feed, 1.0e9).conversion < 1.0)
+  assert_eq(sweep_pfr(reaction, feed, 5.0, 0).length(), 0)
+  assert_eq(sweep_pfr(reaction, feed, 5.0, 1).length(), 1)
+}
