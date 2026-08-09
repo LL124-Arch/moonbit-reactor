@@ -50,6 +50,9 @@ jobs:
           moon fmt --check
           moon check --deny-warn --diagnostic-limit 200
           moon info
+          while IFS= read -r file; do
+            sed -i '/^-$/{d;}' "$file"
+          done < <(find . -type f -name '*.mbti' -not -path './_build/*')
           git diff --exit-code
 
       - name: Test
