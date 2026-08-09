@@ -316,3 +316,41 @@ test "parallel products partition the first-order rate" {
     1.0e-12,
   )
 }
+
+///|
+test "benchmark registry carries source metadata" {
+  let cases = benchmark_cases()
+  assert_true(cases.length() >= 7)
+  for benchmark in cases {
+    assert_true(benchmark.source.length() > 0)
+    assert_true(benchmark.source_url.has_prefix("https://"))
+    assert_true(benchmark.units.length() > 0)
+    assert_true(benchmark.assumptions.length() > 0)
+    assert_true(benchmark.tolerance > 0.0)
+  }
+}
+
+///|
+test "analytical and measured benchmark cases pass offline" {
+  let pfr_case = benchmark_case("first-order-pfr-da-1")
+  let saponification_case = benchmark_case("ethyl-acetate-saponification-25c")
+  match pfr_case {
+    None => fail("missing PFR benchmark")
+    Some(case) => assert_true(run_benchmark(case).passed)
+  }
+  match saponification_case {
+    None => fail("missing saponification benchmark")
+    Some(case) => assert_true(run_benchmark(case).passed)
+  }
+  let report = benchmark_report_markdown()
+  assert_true(report.contains("first-order-pfr-da-1"))
+  assert_true(report.contains("ethyl-acetate-saponification-25c"))
+  assert_true(benchmark_report_csv().contains("absolute_error"))
+}
+
+///|
+test "all curated benchmark outputs pass their declared tolerance" {
+  for result in benchmark_results() {
+    assert_true(result.passed)
+  }
+}

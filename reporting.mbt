@@ -84,3 +84,22 @@ pub fn network_to_markdown(result : NetworkResult) -> String {
   builder.write_string("\n")
   builder.to_string()
 }
+
+///|
+pub fn BenchmarkResult::to_csv_row(self : BenchmarkResult) -> String {
+  let builder = StringBuilder::new()
+  builder.write_string(self.id)
+  builder.write_string(",")
+  builder.write_string(format_double(self.actual, digits=10))
+  builder.write_string(",")
+  builder.write_string(format_double(self.expected, digits=10))
+  builder.write_string(",")
+  builder.write_string(format_double(self.absolute_error, digits=10))
+  builder.write_string(",")
+  builder.write_string(format_double(self.tolerance, digits=10))
+  builder.write_string(",")
+  builder.write_string(if self.passed { "true" } else { "false" })
+  builder.write_string(",")
+  builder.write_string(self.source_url)
+  builder.to_string()
+}

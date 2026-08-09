@@ -109,6 +109,38 @@ pub(all) struct ParallelReactionResult {
 } derive(Debug, ToJson)
 
 ///|
+pub(all) enum BenchmarkCategory {
+  Analytical
+  LiteratureKinetics
+  MeasuredProperty
+  Screening
+} derive(Debug, Eq, ToJson)
+
+///|
+pub(all) struct BenchmarkCase {
+  id : String
+  title : String
+  category : BenchmarkCategory
+  source : String
+  source_url : String
+  units : String
+  assumptions : String
+  expected : Double
+  tolerance : Double
+} derive(Debug, ToJson)
+
+///|
+pub(all) struct BenchmarkResult {
+  id : String
+  expected : Double
+  actual : Double
+  absolute_error : Double
+  tolerance : Double
+  passed : Bool
+  source_url : String
+} derive(Debug, ToJson)
+
+///|
 pub(all) struct ReactorSweepPoint {
   volume : Double
   conversion : Double
