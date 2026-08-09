@@ -12,6 +12,16 @@ pub fn adiabatic_temperature(Feed, Reaction, Double) -> Double
 
 pub fn batch_conversion_isothermal(Reaction, Feed, Double) -> Double
 
+pub fn benchmark_case(String) -> BenchmarkCase?
+
+pub fn benchmark_cases() -> Array[BenchmarkCase]
+
+pub fn benchmark_report_csv() -> String
+
+pub fn benchmark_report_markdown() -> String
+
+pub fn benchmark_results() -> Array[BenchmarkResult]
+
 pub fn bisect(Double, Double, (Double) -> Double, settings? : SolverSettings) -> BracketResult
 
 pub fn bisect_report(Double, Double, (Double) -> Double, settings? : SolverSettings) -> SolverReport
@@ -82,6 +92,8 @@ pub fn residence_time(Feed, Double) -> Double
 
 pub fn reversible_first_order_rate(ReversibleFirstOrder, Double, Double) -> Double
 
+pub fn run_benchmark(BenchmarkCase) -> BenchmarkResult
+
 pub fn run_network(Reaction, Feed, ArrayView[ReactorStage]) -> NetworkResult
 
 pub fn selectivity_series_first_order(Double, Double, Double) -> Double
@@ -109,6 +121,37 @@ pub fn yield_from_conversion_selectivity(Double, Double) -> Double
 // Errors
 
 // Types and methods
+pub(all) struct BenchmarkCase {
+  id : String
+  title : String
+  category : BenchmarkCategory
+  source : String
+  source_url : String
+  units : String
+  assumptions : String
+  expected : Double
+  tolerance : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) enum BenchmarkCategory {
+  Analytical
+  LiteratureKinetics
+  MeasuredProperty
+  Screening
+} derive(Eq, ToJson, @debug.Debug)
+pub fn BenchmarkCategory::to_string(Self) -> String
+
+pub(all) struct BenchmarkResult {
+  id : String
+  expected : Double
+  actual : Double
+  absolute_error : Double
+  tolerance : Double
+  passed : Bool
+  source_url : String
+} derive(ToJson, @debug.Debug)
+pub fn BenchmarkResult::to_csv_row(Self) -> String
+
 pub(all) struct BracketResult {
   root : Double
   residual : Double

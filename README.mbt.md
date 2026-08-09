@@ -1,6 +1,6 @@
 # moonbit-reactor
 
-`moonbit-reactor` is a MoonBit library for chemical reactor design calculations. It focuses on common engineering models rather than full fluid simulation: CSTR, PFR, and batch reactors; zero-, first-, and second-order kinetics; isothermal, adiabatic, and jacketed non-isothermal estimates; small root finding and integration helpers; and reusable examples for teaching or early process screening.
+`moonbit-reactor` is a MoonBit library for chemical reactor design calculations. It focuses on common engineering models rather than full fluid simulation: CSTR, PFR, and batch reactors; zero-, first-, and second-order kinetics; reversible, series, and parallel reaction helpers; isothermal, adiabatic, and jacketed non-isothermal estimates; numerical solver diagnostics; and source-traceable offline benchmarks for teaching or early process screening.
 
 The project is prepared for the MoonBit OSC2026 open-source ecosystem competition. The scope is deliberately larger than a single formula collection, but still small enough to be tested and maintained as a practical MoonBit package.
 
@@ -23,6 +23,10 @@ Before selecting this topic, I checked mooncakes.io with reactor-related keyword
 - Reactor-stage networks for CSTR/PFR train comparison.
 - Markdown and CSV-style reporting helpers.
 - Grid-search utilities for constrained early design choices.
+- Residence time, space time, conversion, yield, and selectivity metrics.
+- Reversible first-order, series first-order, and parallel first-order helpers.
+- Explicit solver reports for convergence, bracket failure, iteration limits, and invalid ranges.
+- Seven offline benchmark cases with source URLs, units, assumptions, and tolerances.
 - Example cases: ethyl acetate saponification, first-order series reaction, and exothermic CSTR safety boundary.
 
 ## Quick start
@@ -47,6 +51,33 @@ test {
   let point = design_pfr(reaction, feed, 4.0)
   assert_true(point.conversion > 0.63)
   assert_true(point.conversion < 0.64)
+}
+```
+
+Derive engineering metrics and inspect a numerical solver status:
+
+```mbt check
+///|
+test "metrics and solver report" {
+  let feed = Feed::new(
+    concentration=1.0,
+    volumetric_flow=2.0,
+    temperature=300.0,
+  )
+  assert_true(nearly_equal(residence_time(feed, 4.0), 2.0))
+  let report = bisect_report(0.0, 2.0, fn(x) { x * x - 2.0 })
+  assert_eq(report.status, Converged)
+  assert_true(report.root > 1.4 && report.root < 1.5)
+}
+```
+
+Run the source-traceable benchmark suite without network access:
+
+```mbt check
+///|
+test "benchmark report is available offline" {
+  assert_true(benchmark_cases().length() >= 7)
+  assert_true(benchmark_report_markdown().contains("first-order-pfr-da-1"))
 }
 ```
 
@@ -86,6 +117,8 @@ test {
 - `HeatExchange`: lumped `UA` and coolant temperature for early cooled-reactor estimates.
 - `DesignPoint`: reactor kind, volume, residence time, conversion, outlet concentration, outlet temperature, heat removal, and outlet rate.
 - `SafetyBoundary`: maximum safe volume or residence time under a temperature constraint.
+- `SolverReport`: numerical result with explicit convergence status, residual, and iteration count.
+- `BenchmarkCase` and `BenchmarkResult`: source metadata and offline regression outcomes.
 
 Main functions:
 
@@ -102,6 +135,11 @@ Main functions:
 - `sweep_to_csv`
 - `maximize_conversion_under_temperature`
 - `minimize_volume_for_conversion`
+- `residence_time`
+- `series_first_order_batch`
+- `parallel_first_order_rates`
+- `benchmark_cases`
+- `benchmark_report_markdown`
 
 ## Validation
 
@@ -110,6 +148,7 @@ moon fmt --check
 moon check --deny-warn
 moon test --deny-warn
 moon test --deny-warn --target native
+moon run cmd/benchmarks
 moon info
 git diff --exit-code
 ```
@@ -124,10 +163,18 @@ Current MoonBit builds expose `--deny-warn` for check/test. `moon fmt` uses `--c
 - AI usage: AI assisted implementation and documentation polishing; the project design, scope, validation, and open-source compliance remain manually reviewed.
 - Mooncakes plan: publish after repository URLs, CI, and interface files are stable.
 
+## Scope and limitations
+
+The library is intended for deterministic early-stage screening and education. It
+does not provide unit algebra, CFD, multiphase flow, thermodynamic property
+packages, plant-scale safety certification, or arbitrary reaction-graph solving.
+Benchmark records distinguish analytical identities, literature parameters,
+measured properties, and declared screening assumptions.
+
 ## Roadmap
 
-- Add more irreversible and reversible rate law helpers.
+- Add adaptive Runge-Kutta integration for strongly temperature-sensitive screening.
 - Add dimension-aware wrappers once the MoonBit ecosystem has a stable units package.
-- Add CSV-style sweep export for plotting tools.
-- Add more examples from reaction-engineering textbooks and open course material.
+- Add more source-reviewed kinetic records with uncertainty intervals.
+- Add sensitivity and uncertainty summaries around benchmark outputs.
 - Keep public API changes visible through `moon info` generated interfaces.

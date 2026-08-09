@@ -1,0 +1,34 @@
+name: MoonBit CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install native compiler
+        run: sudo apt-get update && sudo apt-get install -y gcc
+
+      - name: Install MoonBit
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+
+      - name: Strict check and generated interface check
+        run: |
+          moon version
+          moon fmt --check
+          moon check --deny-warn --diagnostic-limit 200
+          moon info
+          git diff --exit-code
+
+      - name: Tests and offline benchmarks
+        run: |
+          moon test --deny-warn --diagnostic-limit 200
+          moon test --deny-warn --target native --diagnostic-limit 200
+          moon run cmd/benchmarks

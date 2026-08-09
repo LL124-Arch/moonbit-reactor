@@ -354,3 +354,83 @@ test "all curated benchmark outputs pass their declared tolerance" {
     assert_true(result.passed)
   }
 }
+
+///|
+test "reverse root ranges are invalid" {
+  let report = bisect_report(2.0, 0.0, fn(x) { x - 1.0 })
+  assert_eq(report.status, InvalidRange)
+}
+
+///|
+test "nan root endpoints are invalid" {
+  let report = bisect_report(0.0 / 0.0, 1.0, fn(x) { x })
+  assert_eq(report.status, InvalidRange)
+}
+
+///|
+test "invalid concentration conversion returns zero" {
+  let feed = Feed::new(
+    concentration=0.0,
+    volumetric_flow=1.0,
+    temperature=300.0,
+  )
+  assert_eq(conversion_from_concentration(feed, 0.5), 0.0)
+}
+
+///|
+test "reaction rate clamps negative concentration" {
+  let reaction = Reaction::new(name="A -> B", order=First, k_ref=0.2)
+  assert_eq(reaction.rate(-1.0, 300.0), 0.0)
+}
+
+///|
+test "parallel zero rates return zero selectivity" {
+  let result = parallel_first_order_rates(1.0, 0.0, 0.0)
+  assert_eq(result.product_a_rate, 0.0)
+  assert_eq(result.product_b_rate, 0.0)
+  assert_eq(result.product_a_selectivity, 0.0)
+  assert_eq(result.product_b_selectivity, 0.0)
+}
+
+///|
+test "series zero time has no products" {
+  let result = series_first_order_batch(1.0, 1.0, 0.2, 0.0)
+  assert_eq(result.intermediate_concentration, 0.0)
+  assert_eq(result.product_concentration, 0.0)
+  assert_eq(result.intermediate_selectivity, 0.0)
+}
+
+///|
+test "series equal rates remain finite" {
+  let result = series_first_order_batch(1.0, 0.5, 0.5, 2.0)
+  assert_true(result.intermediate_concentration > 0.0)
+  assert_true(result.product_concentration > 0.0)
+  assert_true(result.intermediate_selectivity < 1.0)
+}
+
+///|
+test "negative reaction rates are bounded" {
+  let result = series_first_order_batch(1.0, -1.0, -0.2, 2.0)
+  assert_eq(result.intermediate_concentration, 0.0)
+  assert_eq(result.product_concentration, 0.0)
+}
+
+///|
+test "empty network preserves feed state" {
+  let reaction = Reaction::new(name="A -> B", order=First, k_ref=0.2)
+  let feed = Feed::new(
+    concentration=1.0,
+    volumetric_flow=1.0,
+    temperature=300.0,
+  )
+  let result = run_network(reaction, feed, [])
+  assert_eq(result.stages.length(), 0)
+  assert_eq(result.final_conversion, 0.0)
+  assert_eq(result.final_concentration, 1.0)
+}
+
+///|
+test "zero-stage train still has a usable stage count" {
+  assert_eq(equal_volume_cstr_train(0, 10.0).length(), 1)
+  assert_eq(equal_volume_pfr_train(-2, 10.0).length(), 1)
+}

@@ -14,14 +14,18 @@ This repository is shaped for the MoonBit OSC2026 open-source ecosystem competit
 - [x] MoonBit module exists: `moon.mod`.
 - [x] Public package exists at the repository root.
 - [x] Runnable example exists: `moon run cmd/main`.
+- [x] Offline benchmark executable exists: `moon run cmd/benchmarks`.
 - [x] Tests exist: `moon test`.
+- [x] Test suite covers 40 deterministic cases, including boundary and benchmark checks.
 - [x] Strict checks documented and used.
+- [x] Solver failures expose explicit diagnostic statuses.
+- [x] Benchmark parameters and expected values have source URLs, units, and assumptions.
 - [x] Apache-2.0 license exists.
 - [x] README describes goals, scope, usage, validation, and roadmap.
 - [x] Source statement avoids fake contributors.
 - [x] GitHub remote URL filled into `moon.mod`.
 - [x] GitLink remote URL filled into project notes after creation.
-- [ ] Mooncakes package published after final repository URLs are stable.
+- [ ] Mooncakes package published after final repository URLs and v0.2 API are stable.
 
 ## Repository links
 
