@@ -87,6 +87,28 @@ pub(all) struct SolverReport {
 } derive(Debug, ToJson)
 
 ///|
+pub(all) struct ReversibleFirstOrder {
+  forward_rate : Double
+  reverse_rate : Double
+  equilibrium_concentration : Double
+} derive(Debug, ToJson)
+
+///|
+pub(all) struct SeriesReactionResult {
+  intermediate_concentration : Double
+  product_concentration : Double
+  intermediate_selectivity : Double
+} derive(Debug, ToJson)
+
+///|
+pub(all) struct ParallelReactionResult {
+  product_a_rate : Double
+  product_b_rate : Double
+  product_a_selectivity : Double
+  product_b_selectivity : Double
+} derive(Debug, ToJson)
+
+///|
 pub(all) struct ReactorSweepPoint {
   volume : Double
   conversion : Double

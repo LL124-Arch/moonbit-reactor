@@ -284,3 +284,35 @@ test "solver report handles iteration and integration boundaries" {
   assert_eq(reversed.status, Converged)
   assert_true(reversed.root < 0.0)
 }
+
+///|
+test "reversible first-order rate vanishes at equilibrium" {
+  let model : ReversibleFirstOrder = {
+    forward_rate: 0.4,
+    reverse_rate: 0.2,
+    equilibrium_concentration: 2.0,
+  }
+  assert_close(reversible_first_order_rate(model, 1.0, 2.0), 0.0, 1.0e-12)
+  assert_true(reversible_first_order_rate(model, 1.0, 1.0) > 0.0)
+}
+
+///|
+test "series intermediate selectivity falls after its peak" {
+  let early = series_first_order_batch(1.0, 0.2, 1.0, 1.0)
+  let late = series_first_order_batch(1.0, 0.2, 1.0, 8.0)
+  assert_true(early.intermediate_concentration > 0.0)
+  assert_true(late.product_concentration > early.product_concentration)
+  assert_true(late.intermediate_selectivity < early.intermediate_selectivity)
+}
+
+///|
+test "parallel products partition the first-order rate" {
+  let result = parallel_first_order_rates(2.0, 0.3, 0.2)
+  assert_true(result.product_a_rate > 0.0)
+  assert_true(result.product_b_rate > 0.0)
+  assert_close(
+    result.product_a_selectivity + result.product_b_selectivity,
+    1.0,
+    1.0e-12,
+  )
+}
