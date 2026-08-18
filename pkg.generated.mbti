@@ -8,35 +8,157 @@ import {
 // Values
 pub fn absolute(Double) -> Double
 
+pub fn adiabatic_rise(Double, Double) -> Double
+
 pub fn adiabatic_temperature(Feed, Reaction, Double) -> Double
 
+pub fn adjacent_differences(ArrayView[Double]) -> Array[Double]
+
+pub fn analyze_thermal_train(Reaction, Feed, ArrayView[ReactorStage], ThermalMode, HeatExchange?) -> TrainResult
+
+pub fn analyze_train(Reaction, Feed, ArrayView[ReactorStage]) -> TrainResult
+
+pub fn argmax(ArrayView[Double]) -> Int?
+
+pub fn argmin(ArrayView[Double]) -> Int?
+
+pub fn arrhenius_multiplier(Double, Double, Double) -> Double
+
+pub fn average_batch_conversion(Reaction, Feed, Double, Int) -> Double
+
+pub fn average_pfr_advantage(ArrayView[(Double, Double, Double)]) -> Double
+
+pub fn balance_closure(Double, Double, Double) -> Double
+
+pub fn batch_concentration_curve(Reaction, Feed, ArrayView[Double]) -> Array[Double]
+
+pub fn batch_conversion_curve(Reaction, Feed, ArrayView[Double]) -> Array[Double]
+
+pub fn batch_conversion_gain(Reaction, Feed, Double, Double) -> Double
+
 pub fn batch_conversion_isothermal(Reaction, Feed, Double) -> Double
+
+pub fn batch_curve_is_monotone(ArrayView[Double]) -> Bool
+
+pub fn batch_design_window(Reaction, Feed, Double, Double, Double, Int) -> Array[EnvelopePoint]
+
+pub fn batch_productivity(Feed, Double, Double, Double) -> Double
+
+pub fn batch_profile(Reaction, Feed, Double, points~ : Int, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Array[ProfilePoint]
+
+pub fn batch_rate_curve(Reaction, Feed, ArrayView[Double]) -> Array[Double]
+
+pub fn batch_time_for_target(Reaction, Feed, Double, Double, Int) -> Double?
 
 pub fn benchmark_case(String) -> BenchmarkCase?
 
 pub fn benchmark_cases() -> Array[BenchmarkCase]
 
+pub fn benchmark_failure_count(ArrayView[BenchmarkResult]) -> Int
+
+pub fn benchmark_metadata_complete(BenchmarkCase) -> Bool
+
 pub fn benchmark_report_csv() -> String
 
 pub fn benchmark_report_markdown() -> String
 
+pub fn benchmark_result_is_reproducible(BenchmarkResult) -> Bool
+
+pub fn benchmark_result_to_markdown(BenchmarkResult) -> String
+
 pub fn benchmark_results() -> Array[BenchmarkResult]
+
+pub fn benchmark_results_to_markdown(ArrayView[BenchmarkResult]) -> String
+
+pub fn benchmark_tolerances_valid(ArrayView[BenchmarkCase]) -> Bool
+
+pub fn best_objective(ArrayView[ObjectiveScore]) -> ObjectiveScore?
+
+pub fn best_scenario(ArrayView[OperatingScenario], Double, Double) -> OperatingScenario?
 
 pub fn bisect(Double, Double, (Double) -> Double, settings? : SolverSettings) -> BracketResult
 
 pub fn bisect_report(Double, Double, (Double) -> Double, settings? : SolverSettings) -> SolverReport
 
+pub fn bisection_budget(Double, Double, Double) -> Int
+
+pub fn blasius_friction_factor(Double) -> Double
+
+pub fn bounded_actuator(Double, Double, Double) -> Double
+
+pub fn bracket_condition_number(Double, Double, Double) -> Double
+
+pub fn celsius_to_kelvin(Double) -> Double
+
+pub fn central_difference(Double, (Double) -> Double, step? : Double) -> Double
+
 pub fn clamp_conversion(Double) -> Double
+
+pub fn clamp_rate_constant(Double, Double, Double) -> Double
+
+pub fn clamp_temperature(Double, Double, Double) -> Double
+
+pub fn clip_values(ArrayView[Double], Double, Double) -> Array[Double]
+
+pub fn closest_target(ArrayView[ObjectiveScore], Double, Double, Double) -> ObjectiveScore?
+
+pub fn compare_reactor_curves(Reaction, Feed, ArrayView[Double]) -> Array[(Double, Double, Double)]
+
+pub fn compare_scenarios(OperatingScenario, OperatingScenario, CostAssumptions) -> Double
+
+pub fn compare_train_to_single_pfr(Reaction, Feed, ArrayView[ReactorStage]) -> (TrainResult, DesignPoint, Double)
+
+pub fn complete_benchmark_count(ArrayView[BenchmarkCase]) -> Int
 
 pub fn concentration_from_conversion(Feed, Double) -> Double
 
+pub fn concentration_trajectory(Double, Double, KineticOrder, Double, Int) -> Array[Double]
+
+pub fn controller_peak_error(ArrayView[ControllerStep], Double) -> Double
+
+pub fn controller_reset(ControllerState) -> ControllerState
+
+pub fn controller_step(ControllerConfig, ControllerState, Double, Double, Double) -> ControllerStep
+
+pub fn controller_to_csv(ArrayView[ControllerStep]) -> String
+
+pub fn controller_trace_is_bounded(ArrayView[ControllerStep], ControllerConfig) -> Bool
+
 pub fn conversion_from_concentration(Feed, Double) -> Double
+
+pub fn conversion_from_exposure(Double, KineticOrder, Double) -> Double
+
+pub fn conversion_from_flows(Double, Double) -> Double
 
 pub fn conversion_is_physical(Double) -> Bool
 
+pub fn conversion_residual(Double, Double) -> Double
+
+pub fn conversion_target_is_well_conditioned(Double) -> Bool
+
 pub fn conversion_time_first_order(Double, Double) -> Double
 
+pub fn conversion_volume_area(ArrayView[(Double, Double, Double)], Bool) -> Double
+
+pub fn corrected_rate(Reaction, Double, Double) -> Double
+
+pub fn cost_per_conversion(CostEstimate, DesignPoint) -> Double
+
+pub fn cost_savings(CostEstimate, CostEstimate) -> Double
+
+pub fn cost_to_markdown(CostEstimate) -> String
+
+pub fn cstr_conversion_curve(Reaction, Feed, ArrayView[Double]) -> Array[Double]
+
 pub fn cstr_conversion_isothermal(Reaction, Feed, Double) -> Double
+
+pub fn cstr_volume_from_endpoint(Double, Double, Double) -> Double
+
+pub fn curve_volume_for_target(ArrayView[(Double, Double, Double)], Double, Bool) -> Double?
+
+pub fn damkohler_from_time(Double, Double) -> Double
+
+pub fn damkohler_number(Reaction, Feed, Double) -> Double
 
 pub fn demo_report() -> String
 
@@ -44,33 +166,187 @@ pub fn design_batch(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchang
 
 pub fn design_cstr(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> DesignPoint
 
+pub fn design_envelope(Reaction, Feed, Double, Double, Int, Double, Double) -> Array[EnvelopePoint]
+
 pub fn design_pfr(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> DesignPoint
+
+pub fn design_point_is_physical(DesignPoint, Feed) -> Bool
+
+pub fn design_point_to_csv_row(DesignPoint) -> String
+
+pub fn design_points_to_csv(ArrayView[DesignPoint]) -> String
+
+pub fn design_quality_score(Double, Double, Double, Double, Double, Double) -> Double
+
+pub fn design_sensitivity(Reaction, Feed, Double) -> SensitivityReport
+
+pub fn design_with_perturbation(Reaction, Feed, Double, Perturbation) -> DesignPoint
+
+pub fn dominates(ObjectiveScore, ObjectiveScore) -> Bool
+
+pub fn envelope_to_markdown(ArrayView[EnvelopePoint]) -> String
 
 pub fn equal_volume_cstr_train(Int, Double, thermal_mode? : ThermalMode) -> Array[ReactorStage]
 
 pub fn equal_volume_pfr_train(Int, Double, thermal_mode? : ThermalMode) -> Array[ReactorStage]
 
+pub fn equilibrium_conversion(Double, Double) -> Double
+
+pub fn estimate_annual_cost(DesignPoint, CostAssumptions) -> CostEstimate
+
+pub fn estimate_order(Double, Double, Double, Double) -> Double
+
 pub fn ethyl_acetate_saponification() -> DesignPoint
 
 pub fn euler_integrate(Double, Double, Int, (Double, Double) -> Double) -> Double
 
+pub fn evaluate_grid(SearchConfig, (Double) -> Double) -> Array[ObjectiveScore]
+
+pub fn evaluate_scenario(OperatingScenario) -> DesignPoint
+
+pub fn evaluate_scenarios(ArrayView[OperatingScenario]) -> Array[DesignPoint]
+
+pub fn exchanger_duty(Double, Double, Double) -> Double
+
 pub fn exothermic_cstr_boundary() -> SafetyBoundary
+
+pub fn feasible_scenario_count(ArrayView[OperatingScenario], Double, Double) -> Int
+
+pub fn final_stage_gain(TrainResult) -> Double
 
 pub fn find_temperature_boundary(Reaction, Feed, Double, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> SafetyBoundary
 
+pub fn first_difference(ArrayView[Double], Double) -> Array[Double]
+
+pub fn first_invalid_benchmark(ArrayView[BenchmarkCase]) -> String?
+
+pub fn first_order_concentration(Double, Double, Double) -> Double
+
+pub fn first_order_condition_number(Double) -> Double
+
+pub fn first_order_cstr_error(DesignPoint, Double) -> Double
+
+pub fn first_order_exposure(Double, Double) -> Double
+
+pub fn first_order_pfr_error(DesignPoint, Double) -> Double
+
 pub fn first_order_series_example() -> Double
+
+pub fn first_order_time(Double, Double) -> Double
+
+pub fn first_sweep_target(ArrayView[ReactorSweepPoint], Double) -> ReactorSweepPoint?
+
+pub fn first_under_volume(ArrayView[ObjectiveScore], Double) -> ObjectiveScore?
+
+pub fn first_unsafe_sweep_point(ArrayView[ReactorSweepPoint], Double) -> ReactorSweepPoint?
+
+pub fn fit_first_order_rate(Double, Double, Double) -> Double
+
+pub fn fit_second_order_rate(Double, Double, Double) -> Double
+
+pub fn flow_velocity(Double, Double) -> Double
 
 pub fn format_double(Double, digits? : Int) -> String
 
+pub fn format_optional(Double?, Int) -> String
+
+pub fn friction_factor(Double) -> Double
+
+pub fn half_life(Double) -> Double
+
+pub fn has_standard_csv_header(String, String) -> Bool
+
+pub fn heat_capacity_constant(Double) -> Double
+
+pub fn heat_capacity_flow(Double, Double, Double) -> Double
+
+pub fn heat_capacity_linear(Double, Double, Double, Double) -> Double
+
+pub fn heat_release_number(Reaction, Feed) -> Double
+
 pub fn heat_removed_by_jacket(HeatExchange, Double) -> Double
+
+pub fn highest_conversion_scenario(ArrayView[OperatingScenario]) -> (String, Double)?
+
+pub fn hottest_scenario(ArrayView[OperatingScenario]) -> (String, Double)?
+
+pub fn incremental_conversion_rate(DesignPoint, DesignPoint) -> Double
+
+pub fn integrate_adaptive(Double, Double, (Double) -> Double, tolerance? : Double, max_depth? : Int) -> IntegrationResult
+
+pub fn integrate_rk4(Double, Double, Double, Int, (Double, Double) -> Double) -> Double
+
+pub fn integrate_simpson(Double, Double, Int, (Double) -> Double) -> Double
 
 pub fn integrate_trapezoid(Double, Double, Int, (Double) -> Double) -> Double
 
 pub fn integrate_trapezoid_report(Double, Double, Int, (Double) -> Double) -> SolverReport
 
+pub fn interval_encloses_nominal(ConversionInterval) -> Bool
+
+pub fn jacket_duty(Double, Double, Double, Double) -> Double
+
+pub fn jacket_heat_removal(HeatExchange, Double, Double, Double) -> Double
+
+pub fn jacket_number(HeatExchange, Feed) -> Double
+
+pub fn kelvin_to_celsius(Double) -> Double
+
+pub fn laminar_friction_factor(Double) -> Double
+
+pub fn last_over_conversion(ArrayView[ObjectiveScore], Double) -> ObjectiveScore?
+
+pub fn last_safe_sweep_point(ArrayView[ReactorSweepPoint], Double) -> ReactorSweepPoint?
+
+pub fn levenspiel_ordinate(Reaction, Feed, Double) -> Double
+
+pub fn linspace(Double, Double, Int) -> Array[Double]
+
+pub fn liters_per_minute_to_m3_per_second(Double) -> Double
+
+pub fn log_mean_temperature_difference(Double, Double) -> Double
+
+pub fn logspace(Double, Double, Int) -> Array[Double]
+
+pub fn low_pass(ArrayView[Double], Double) -> Array[Double]
+
+pub fn m3_per_second_to_liters_per_minute(Double) -> Double
+
 pub fn maximize_conversion_under_temperature(Reaction, Feed, SearchRange, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> OptimizationResult
 
+pub fn maximum_absolute_error(ArrayView[Double], ArrayView[Double]) -> Double
+
+pub fn maximum_benchmark_error(ArrayView[BenchmarkResult]) -> Double
+
+pub fn maximum_scalar(ArrayView[ObjectiveScore]) -> ObjectiveScore?
+
+pub fn maximum_sweep_conversion(ArrayView[ReactorSweepPoint]) -> Double
+
+pub fn maximum_temperature_margin(ArrayView[ReactorSweepPoint], Double) -> Double
+
+pub fn mean_absolute_error(ArrayView[Double], ArrayView[Double]) -> Double
+
+pub fn mean_sweep_conversion(ArrayView[ReactorSweepPoint]) -> Double
+
+pub fn midpoints(ArrayView[Double]) -> Array[Double]
+
 pub fn minimize_volume_for_conversion(Reaction, Feed, SearchRange, Double, kind? : ReactorKind) -> OptimizationResult
+
+pub fn minimum_feasible_volume(ArrayView[EnvelopePoint]) -> EnvelopePoint?
+
+pub fn minimum_scalar(ArrayView[ObjectiveScore]) -> ObjectiveScore?
+
+pub fn minimum_sweep_conversion(ArrayView[ReactorSweepPoint]) -> Double
+
+pub fn minimum_temperature_margin(ArrayView[ReactorSweepPoint], Double) -> Double
+
+pub fn mixed_temperature(Double, Double, Double, Double) -> Double
+
+pub fn mixing_ratio(Double, Double) -> Double
+
+pub fn molar_liter_to_molar_meter(Double) -> Double
+
+pub fn molar_meter_to_molar_liter(Double) -> Double
 
 pub fn natural_log(Double) -> Double
 
@@ -78,45 +354,261 @@ pub fn nearly_equal(Double, Double, tolerance? : Double) -> Bool
 
 pub fn network_to_markdown(NetworkResult) -> String
 
+pub fn normalize_to_range(ArrayView[Double], Double, Double) -> Array[Double]
+
+pub fn objective_improvement(ObjectiveScore, ObjectiveScore) -> Double
+
+pub fn objective_surface(Reaction, Feed, ArrayView[Double], Double, Double, Double) -> Array[ObjectiveScore]
+
+pub fn objective_surface_to_csv(ArrayView[ObjectiveScore]) -> String
+
+pub fn optimize_batch_cycle(Reaction, Feed, Double, Double, Int) -> ObjectiveScore?
+
+pub fn optimize_pfr_volume(Reaction, Feed, SearchConfig, Double, Double) -> ObjectiveScore?
+
+pub fn optimize_rate_multiplier(Reaction, Feed, Double, SearchConfig, Double) -> ObjectiveScore?
+
+pub fn optimize_train_count(Reaction, Feed, Double, Int, Int) -> ObjectiveScore?
+
+pub fn outlet_flow(Feed, DesignPoint) -> Double
+
 pub fn package_name() -> String
 
 pub fn parallel_first_order_rates(Double, Double, Double) -> ParallelReactionResult
 
+pub fn parallel_product_rate(Double, Double, KineticOrder) -> Double
+
+pub fn parallel_selectivity(Double, Double) -> Double
+
+pub fn parallel_split(Double, Double, Double, KineticOrder, KineticOrder) -> (Double, Double)
+
+pub fn pareto_frontier(ArrayView[ObjectiveScore]) -> Array[ObjectiveScore]
+
+pub fn penalty_score(Double, Bool, Double) -> Double
+
+pub fn pfr_advantage_over_cstr(Double) -> Double
+
+pub fn pfr_conversion_curve(Reaction, Feed, ArrayView[Double]) -> Array[Double]
+
 pub fn pfr_conversion_isothermal(Reaction, Feed, Double) -> Double
+
+pub fn pfr_profile(Reaction, Feed, Double, points~ : Int, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Array[ProfilePoint]
+
+pub fn pfr_volume_from_curve(ArrayView[Double], ArrayView[Double], Double) -> Double
+
+pub fn power_law_rate(Double, Double, Double) -> Double
+
+pub fn pressure_drop(Double, Double, Double, Double, Double) -> Double
+
+pub fn product_molar_flow(Feed, DesignPoint, Double) -> Double
+
+pub fn profile_interpolate(ArrayView[ProfilePoint], Double) -> ProfilePoint
+
+pub fn profile_is_monotone(ArrayView[ProfilePoint]) -> Bool
+
+pub fn profile_rate_exposure(ArrayView[ProfilePoint]) -> Double
+
+pub fn profile_summary(ArrayView[ProfilePoint]) -> String
+
+pub fn profile_to_csv(ArrayView[ProfilePoint]) -> String
+
+pub fn propagate_interval(Reaction, Feed, Double, Double, Double) -> ConversionInterval
+
+pub fn rate_residual(Reaction, Double, Double, Double) -> Double
+
+pub fn rate_temperature_ratio(Reaction, Double, Double) -> Double
+
+pub fn relative_design_change(DesignPoint, DesignPoint) -> Double
+
+pub fn relative_rate_error(Reaction, Double, Double, Double) -> Double
+
+pub fn report_contains_all(String, ArrayView[String]) -> Bool
+
+pub fn report_row_count(String) -> Int
 
 pub fn required_cstr_volume(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Double
 
 pub fn required_pfr_volume(Reaction, Feed, Double, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Double
 
+pub fn required_ua(Double, Double, Double) -> Double
+
 pub fn residence_time(Feed, Double) -> Double
 
+pub fn residence_time_ratio(DesignPoint, DesignPoint) -> Double
+
+pub fn residence_window_ok(Double, Double, Double) -> Bool
+
+pub fn reversible_conversion(Double, Double, Double) -> Double
+
 pub fn reversible_first_order_rate(ReversibleFirstOrder, Double, Double) -> Double
+
+pub fn reynolds_number(Double, Double, Double, Double) -> Double
+
+pub fn richardson_derivative(Double, (Double) -> Double, step? : Double) -> Double
+
+pub fn rk4_step(Double, Double, Double, (Double, Double) -> Double) -> Double
+
+pub fn root_mean_square(ArrayView[Double]) -> Double
 
 pub fn run_benchmark(BenchmarkCase) -> BenchmarkResult
 
 pub fn run_network(Reaction, Feed, ArrayView[ReactorStage]) -> NetworkResult
 
+pub fn safety_counts(ArrayView[ReactorSweepPoint], Double) -> (Int, Int)
+
+pub fn safety_factor(Double, Double) -> Double
+
+pub fn safety_factor_ok(Double, Double, Double) -> Bool
+
+pub fn scale_scenario_flow(OperatingScenario, Double) -> OperatingScenario
+
+pub fn scale_scenario_rate(OperatingScenario, Double) -> OperatingScenario
+
+pub fn scenario_matrix(OperatingScenario, ArrayView[Double], ArrayView[Double]) -> Array[OperatingScenario]
+
+pub fn scenario_meets_conversion(OperatingScenario, Double) -> Bool
+
+pub fn scenario_safety(OperatingScenario, Double) -> Bool
+
+pub fn scenario_score(OperatingScenario, Double, Double) -> Double
+
+pub fn scenario_volume_sweep(OperatingScenario, ArrayView[Double]) -> Array[ReactorSweepPoint]
+
+pub fn scenarios_to_csv(ArrayView[OperatingScenario]) -> String
+
+pub fn score_design(DesignPoint, Double, Double, Double) -> ObjectiveScore
+
+pub fn score_precedes(ObjectiveScore, ObjectiveScore) -> Bool
+
+pub fn screen_scenario(OperatingScenario, Double, Double) -> Bool
+
+pub fn screen_temperature(DesignPoint, Double) -> ThermalScreening
+
+pub fn second_order_concentration(Double, Double, Double) -> Double
+
+pub fn second_order_exposure(Double, Double, Double) -> Double
+
+pub fn second_order_half_life(Double, Double) -> Double
+
+pub fn second_order_time(Double, Double, Double) -> Double
+
+pub fn selectivity_from_rates(Double, Double) -> Double
+
 pub fn selectivity_series_first_order(Double, Double, Double) -> Double
+
+pub fn sensible_enthalpy(Double, Double, Double) -> Double
+
+pub fn sensible_enthalpy_linear(Double, Double, Double, Double) -> Double
+
+pub fn sensitivity_scan(Reaction, Feed, Double, ArrayView[Double]) -> Array[DesignPoint]
+
+pub fn sensitivity_to_markdown(SensitivityReport) -> String
 
 pub fn series_first_order_batch(Double, Double, Double, Double) -> SeriesReactionResult
 
+pub fn series_intermediate(Double, Double, Double, Double) -> Double
+
+pub fn series_product(Double, Double, Double, Double) -> Double
+
+pub fn shift_scenario_temperature(OperatingScenario, Double) -> OperatingScenario
+
+pub fn sign_change_count(ArrayView[Double]) -> Int
+
+pub fn simulate_controller(ControllerConfig, Double, Double, Double, Double, Double, Int) -> Array[ControllerStep]
+
 pub fn space_time(Feed, Double) -> Double
+
+pub fn space_velocity(Feed, Double) -> Double
 
 pub fn sweep_cstr(Reaction, Feed, Double, Int, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Array[ReactorSweepPoint]
 
+pub fn sweep_is_sorted(ArrayView[ReactorSweepPoint]) -> Bool
+
 pub fn sweep_pfr(Reaction, Feed, Double, Int, thermal_mode? : ThermalMode, exchange? : HeatExchange) -> Array[ReactorSweepPoint]
+
+pub fn sweep_temperature_range(ArrayView[ReactorSweepPoint]) -> (Double, Double)
 
 pub fn sweep_to_csv(ArrayView[ReactorSweepPoint]) -> String
 
+pub fn tabulated_trapezoid(ArrayView[Double], ArrayView[Double]) -> Double
+
+pub fn target_conversion_for_production(Feed, Double, Double) -> Double
+
+pub fn target_distance(ObjectiveScore, Double, Double, Double) -> Double
+
 pub fn temperature_for_mode(ThermalMode, Feed, Reaction, Double, HeatExchange?) -> Double
+
+pub fn temperature_for_multiplier(Double, Double, Double) -> Double
+
+pub fn temperature_residual(Double, Double) -> Double
+
+pub fn thermal_margin(Double, Double) -> Double
+
+pub fn thermal_window_ok(Double, Double, Double) -> Bool
+
+pub fn train_mass_balance_residual(Feed, TrainResult) -> Double
+
+pub fn train_peak_temperature(TrainResult) -> Double
+
+pub fn train_summary(TrainResult) -> String
+
+pub fn train_to_csv(TrainResult) -> String
+
+pub fn uncertainty_samples(Reaction, Feed, Double, Int) -> Array[Double]
+
+pub fn uncertainty_summary(Reaction, Feed, Double, Int) -> UncertaintySummary
+
+pub fn uncertainty_summary_is_ordered(UncertaintySummary) -> Bool
+
+pub fn uncertainty_to_markdown(UncertaintySummary) -> String
+
+pub fn uniform_grid(SearchConfig) -> Array[Double]
+
+pub fn validate_controller_settings(ControllerConfig, Double, Int) -> ValidationReport
 
 pub fn validate_design_inputs(Reaction, Feed, Double) -> ValidationReport
 
+pub fn validate_design_point(DesignPoint, Feed) -> ValidationReport
+
 pub fn validate_feed(Feed) -> ValidationReport
+
+pub fn validate_feed_window(Feed, Double, Double) -> ValidationReport
 
 pub fn validate_reaction(Reaction) -> ValidationReport
 
+pub fn validate_reaction_temperature(Reaction, Double) -> ValidationReport
+
+pub fn validate_sweep(ArrayView[ReactorSweepPoint], Feed) -> ValidationReport
+
+pub fn validate_temperature_interval(Double, Double) -> ValidationReport
+
+pub fn validate_tolerance(Double, Int) -> ValidationReport
+
+pub fn validate_train(TrainResult) -> ValidationReport
+
+pub fn validate_volume_grid(Double, Double, Int) -> ValidationReport
+
+pub fn validation_to_markdown(ValidationReport) -> String
+
+pub fn velocity_window_ok(Double, Double, Double) -> Bool
+
+pub fn volume_for_production(Reaction, Feed, Double, Double) -> Double
+
+pub fn volumetric_heat_release(Reaction, Feed, Double) -> Double
+
+pub fn volumetric_heat_removal(HeatExchange, Double, Double) -> Double
+
+pub fn volumetric_productivity(Feed, DesignPoint) -> Double
+
+pub fn weighted_mean(ArrayView[Double], ArrayView[Double]) -> Double
+
 pub fn yield_from_conversion_selectivity(Double, Double) -> Double
+
+pub fn yield_from_metrics(Double, Double, Double) -> Double
+
+pub fn zero_order_concentration(Double, Double, Double) -> Double
+
+pub fn zero_order_time(Double, Double, Double) -> Double
 
 // Errors
 
@@ -159,6 +651,53 @@ pub(all) struct BracketResult {
   converged : Bool
 } derive(ToJson, @debug.Debug)
 
+pub(all) struct ControllerConfig {
+  proportional : Double
+  integral : Double
+  derivative : Double
+  minimum : Double
+  maximum : Double
+} derive(ToJson, @debug.Debug)
+pub fn ControllerConfig::new(proportional~ : Double, integral~ : Double, derivative~ : Double, minimum~ : Double, maximum~ : Double) -> Self
+pub fn ControllerConfig::validate(Self) -> Bool
+
+pub(all) struct ControllerState {
+  integral : Double
+  previous_error : Double
+  output : Double
+} derive(ToJson, @debug.Debug)
+pub fn ControllerState::default() -> Self
+
+pub(all) struct ControllerStep {
+  output : Double
+  state : ControllerState
+  saturated : Bool
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct ConversionInterval {
+  minimum_conversion : Double
+  maximum_conversion : Double
+  nominal_conversion : Double
+  minimum_temperature : Double
+  maximum_temperature : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct CostAssumptions {
+  annual_hours : Double
+  electricity_price : Double
+  vessel_cost_per_volume : Double
+  pump_cost_per_flow : Double
+  maintenance_fraction : Double
+} derive(ToJson, @debug.Debug)
+pub fn CostAssumptions::default() -> Self
+
+pub(all) struct CostEstimate {
+  capital : Double
+  utilities : Double
+  maintenance : Double
+  total : Double
+} derive(ToJson, @debug.Debug)
+
 pub(all) struct DesignPoint {
   kind : ReactorKind
   thermal_mode : ThermalMode
@@ -173,6 +712,14 @@ pub(all) struct DesignPoint {
 pub fn DesignPoint::summary_rows(Self) -> Array[ReportColumn]
 pub fn DesignPoint::to_markdown(Self) -> String
 
+pub(all) struct EnvelopePoint {
+  volume : Double
+  conversion : Double
+  temperature : Double
+  feasible : Bool
+  reason : String
+} derive(ToJson, @debug.Debug)
+
 pub(all) struct Feed {
   concentration : Double
   volumetric_flow : Double
@@ -186,6 +733,13 @@ pub(all) struct HeatExchange {
   coolant_temperature : Double
 } derive(ToJson, @debug.Debug)
 pub fn HeatExchange::new(ua~ : Double, coolant_temperature~ : Double) -> Self
+
+pub(all) struct IntegrationResult {
+  value : Double
+  estimated_error : Double
+  evaluations : Int
+  converged : Bool
+} derive(ToJson, @debug.Debug)
 
 pub(all) enum KineticOrder {
   Zero
@@ -202,6 +756,26 @@ pub(all) struct NetworkResult {
   total_volume : Double
 } derive(ToJson, @debug.Debug)
 
+pub(all) struct ObjectiveScore {
+  volume : Double
+  conversion : Double
+  temperature : Double
+  score : Double
+  feasible : Bool
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct OperatingScenario {
+  name : String
+  reaction : Reaction
+  feed : Feed
+  volume : Double
+  thermal_mode : ThermalMode
+  exchange : HeatExchange?
+} derive(ToJson, @debug.Debug)
+pub fn OperatingScenario::adiabatic(name~ : String, reaction~ : Reaction, feed~ : Feed, volume~ : Double) -> Self
+pub fn OperatingScenario::isothermal(name~ : String, reaction~ : Reaction, feed~ : Feed, volume~ : Double) -> Self
+pub fn OperatingScenario::jacketed(name~ : String, reaction~ : Reaction, feed~ : Feed, volume~ : Double, exchange~ : HeatExchange) -> Self
+
 pub(all) struct OptimizationResult {
   volume : Double
   conversion : Double
@@ -215,6 +789,21 @@ pub(all) struct ParallelReactionResult {
   product_b_rate : Double
   product_a_selectivity : Double
   product_b_selectivity : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct Perturbation {
+  rate_multiplier : Double
+  temperature_offset : Double
+  flow_multiplier : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct ProfilePoint {
+  position : Double
+  time : Double
+  conversion : Double
+  concentration : Double
+  temperature : Double
+  rate : Double
 } derive(ToJson, @debug.Debug)
 
 pub(all) struct Reaction {
@@ -271,12 +860,27 @@ pub(all) struct SafetyBoundary {
   limited_by_temperature : Bool
 } derive(ToJson, @debug.Debug)
 
+pub(all) struct SearchConfig {
+  minimum : Double
+  maximum : Double
+  steps : Int
+} derive(ToJson, @debug.Debug)
+pub fn SearchConfig::new(minimum~ : Double, maximum~ : Double, steps~ : Int) -> Self
+
 pub(all) struct SearchRange {
   min : Double
   max : Double
   steps : Int
 } derive(ToJson, @debug.Debug)
 pub fn SearchRange::new(min~ : Double, max~ : Double, steps~ : Int) -> Self
+
+pub(all) struct SensitivityReport {
+  conversion_wrt_volume : Double
+  conversion_wrt_rate_constant : Double
+  conversion_wrt_temperature : Double
+  temperature_wrt_volume : Double
+  volume_wrt_target_conversion : Double
+} derive(ToJson, @debug.Debug)
 
 pub(all) struct SeriesReactionResult {
   intermediate_concentration : Double
@@ -312,6 +916,32 @@ pub(all) enum ThermalMode {
 } derive(Eq, ToJson, @debug.Debug)
 pub fn ThermalMode::to_string(Self) -> String
 
+pub(all) struct ThermalScreening {
+  inlet_temperature : Double
+  outlet_temperature : Double
+  maximum_temperature : Double
+  margin : Double
+  safe : Bool
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct TrainResult {
+  stages : Array[DesignPoint]
+  final_conversion : Double
+  total_volume : Double
+  total_residence_time : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct UncertaintySummary {
+  samples : Int
+  minimum : Double
+  maximum : Double
+  mean : Double
+  standard_deviation : Double
+  p05 : Double
+  p50 : Double
+  p95 : Double
+} derive(ToJson, @debug.Debug)
+
 pub(all) enum ValidationLevel {
   Info
   Warning
@@ -338,4 +968,3 @@ pub fn ValidationReport::to_text(Self) -> String
 // Type aliases
 
 // Traits
-

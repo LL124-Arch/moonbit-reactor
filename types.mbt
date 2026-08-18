@@ -157,6 +157,141 @@ pub(all) struct SafetyBoundary {
 } derive(Debug, ToJson)
 
 ///|
+/// A numerical integration result with an explicit error estimate.
+pub(all) struct IntegrationResult {
+  value : Double
+  estimated_error : Double
+  evaluations : Int
+  converged : Bool
+} derive(Debug, ToJson)
+
+///|
+/// A sampled axial or temporal reactor state.
+pub(all) struct ProfilePoint {
+  position : Double
+  time : Double
+  conversion : Double
+  concentration : Double
+  temperature : Double
+  rate : Double
+} derive(Debug, ToJson)
+
+///|
+/// Local finite-difference sensitivities of a design point.
+pub(all) struct SensitivityReport {
+  conversion_wrt_volume : Double
+  conversion_wrt_rate_constant : Double
+  conversion_wrt_temperature : Double
+  temperature_wrt_volume : Double
+  volume_wrt_target_conversion : Double
+} derive(Debug, ToJson)
+
+///|
+/// A conservative interval for a screening calculation.
+pub(all) struct ConversionInterval {
+  minimum_conversion : Double
+  maximum_conversion : Double
+  nominal_conversion : Double
+  minimum_temperature : Double
+  maximum_temperature : Double
+} derive(Debug, ToJson)
+
+///|
+/// Summary statistics for deterministic uncertainty samples.
+pub(all) struct UncertaintySummary {
+  samples : Int
+  minimum : Double
+  maximum : Double
+  mean : Double
+  standard_deviation : Double
+  p05 : Double
+  p50 : Double
+  p95 : Double
+} derive(Debug, ToJson)
+
+///|
+/// PID gains and actuator limits.
+pub(all) struct ControllerConfig {
+  proportional : Double
+  integral : Double
+  derivative : Double
+  minimum : Double
+  maximum : Double
+} derive(Debug, ToJson)
+
+///|
+/// Persistent state for a discrete controller.
+pub(all) struct ControllerState {
+  integral : Double
+  previous_error : Double
+  output : Double
+} derive(Debug, ToJson)
+
+///|
+/// The controller output and updated state.
+pub(all) struct ControllerStep {
+  output : Double
+  state : ControllerState
+  saturated : Bool
+} derive(Debug, ToJson)
+
+///|
+/// Economic assumptions for early-stage design screening.
+pub(all) struct CostAssumptions {
+  annual_hours : Double
+  electricity_price : Double
+  vessel_cost_per_volume : Double
+  pump_cost_per_flow : Double
+  maintenance_fraction : Double
+} derive(Debug, ToJson)
+
+///|
+/// A transparent annualized cost estimate.
+pub(all) struct CostEstimate {
+  capital : Double
+  utilities : Double
+  maintenance : Double
+  total : Double
+} derive(Debug, ToJson)
+
+///|
+/// A design point annotated with feasibility checks.
+pub(all) struct EnvelopePoint {
+  volume : Double
+  conversion : Double
+  temperature : Double
+  feasible : Bool
+  reason : String
+} derive(Debug, ToJson)
+
+///|
+/// Per-stage and aggregate results for a train.
+pub(all) struct TrainResult {
+  stages : Array[DesignPoint]
+  final_conversion : Double
+  total_volume : Double
+  total_residence_time : Double
+} derive(Debug, ToJson)
+
+///|
+/// A reproducible input perturbation used by sensitivity analysis.
+pub(all) struct Perturbation {
+  rate_multiplier : Double
+  temperature_offset : Double
+  flow_multiplier : Double
+} derive(Debug, ToJson)
+
+///|
+/// A single design objective used by screening optimizers.
+pub(all) struct ObjectiveScore {
+  volume : Double
+  conversion : Double
+  temperature : Double
+  score : Double
+  feasible : Bool
+} derive(Debug, ToJson)
+
+///|
 pub fn Reaction::new(
   name~ : String,
   order~ : KineticOrder,
@@ -191,6 +326,48 @@ pub fn HeatExchange::new(
   coolant_temperature~ : Double,
 ) -> HeatExchange {
   { ua, coolant_temperature }
+}
+
+///|
+/// Construct conservative controller gains and actuator limits.
+pub fn ControllerConfig::new(
+  proportional~ : Double,
+  integral~ : Double,
+  derivative~ : Double,
+  minimum~ : Double,
+  maximum~ : Double,
+) -> ControllerConfig {
+  {
+    proportional: proportional.max(0.0),
+    integral: integral.max(0.0),
+    derivative: derivative.max(0.0),
+    minimum: minimum.min(maximum),
+    maximum: maximum.max(minimum),
+  }
+}
+
+///|
+pub fn ControllerState::default() -> ControllerState {
+  { integral: 0.0, previous_error: 0.0, output: 0.0 }
+}
+
+///|
+pub fn ControllerConfig::validate(self : ControllerConfig) -> Bool {
+  self.minimum <= self.maximum &&
+  self.proportional >= 0.0 &&
+  self.integral >= 0.0 &&
+  self.derivative >= 0.0
+}
+
+///|
+pub fn CostAssumptions::default() -> CostAssumptions {
+  {
+    annual_hours: 8000.0,
+    electricity_price: 0.12,
+    vessel_cost_per_volume: 1200.0,
+    pump_cost_per_flow: 80.0,
+    maintenance_fraction: 0.06,
+  }
 }
 
 ///|

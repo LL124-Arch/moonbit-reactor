@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+concurrency:
+  group: moonbit-reactor-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Test (${{ matrix.os }})
@@ -48,12 +52,14 @@ jobs:
         run: |
           moon version
           moon fmt --check
-          moon check --deny-warn --diagnostic-limit 200
+          moon check --deny-warn --diagnostic-limit 300
           moon info
-          git diff --exit-code --ignore-blank-lines
+          git diff --exit-code --ignore-blank-lines -- pkg.generated.mbti
 
       - name: Test
         run: |
-          moon test --deny-warn --diagnostic-limit 200
-          moon test --deny-warn --target native --diagnostic-limit 200
+          moon test --deny-warn --diagnostic-limit 300
+          moon test --deny-warn --target native --diagnostic-limit 300
+          moon build --target native
+          moon run cmd/main
           moon run cmd/benchmarks
