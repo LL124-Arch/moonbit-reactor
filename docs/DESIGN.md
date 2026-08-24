@@ -33,9 +33,9 @@ declared model, measured-property benchmarks test a transcribed database value,
 and screening benchmarks document project assumptions without claiming external
 validation.
 
-## Extension plan
+## Extension policy
 
-Future work should add adaptive integration and uncertainty summaries while
-keeping existing concrete types stable. New public APIs must be reviewed with
-`moon info`, accompanied by black-box tests, and added to the benchmark or
-documentation surface when they affect engineering outputs.
+Future extensions should preserve the current model boundary and keep existing
+concrete types stable. New public APIs must be reviewed with `moon info`,
+accompanied by black-box tests, and added to the benchmark or documentation
+surface when they affect engineering outputs.

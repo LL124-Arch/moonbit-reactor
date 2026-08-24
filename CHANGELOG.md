@@ -5,7 +5,7 @@
 - Added adaptive quadrature, Simpson/RK4 integration, profiles, and tabulated-data utilities.
 - Added sensitivity, deterministic uncertainty sampling, operating scenarios, and safety screening.
 - Added thermal-property helpers, batch-cycle analysis, objective frontiers, and extended reporting.
-- Expanded strict boundary coverage to 75 deterministic tests and measured the source tree with an explicit line-count script.
+- Expanded strict boundary coverage to 75 deterministic tests.
 - Restructured the public README around project positioning, capabilities, quick start, CLI, architecture, benchmarks, testing, CI, and license.
 
 ## 0.2.0

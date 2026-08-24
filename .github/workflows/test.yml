@@ -50,6 +50,8 @@ jobs:
 
       - name: Check
         run: |
+          moonc -v
+          python .github/scripts/check_moonbit_version.py
           moon version
           moon fmt --check
           moon check --deny-warn --diagnostic-limit 300
