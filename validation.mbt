@@ -163,7 +163,7 @@ pub fn ValidationReport::to_text(self : ValidationReport) -> String {
   if self.messages.length() == 0 {
     "ok"
   } else {
-    let builder = StringBuilder::new()
+    let builder = StringBuilder()
     for i, message in self.messages {
       if i > 0 {
         builder.write_string("\n")

@@ -33,7 +33,7 @@ pub fn DesignPoint::summary_rows(self : DesignPoint) -> Array[ReportColumn] {
 
 ///|
 pub fn DesignPoint::to_markdown(self : DesignPoint) -> String {
-  let builder = StringBuilder::new()
+  let builder = StringBuilder()
   builder.write_string("| field | value |\n")
   builder.write_string("| --- | ---: |\n")
   for row in self.summary_rows() {
@@ -48,7 +48,7 @@ pub fn DesignPoint::to_markdown(self : DesignPoint) -> String {
 
 ///|
 pub fn sweep_to_csv(points : ArrayView[ReactorSweepPoint]) -> String {
-  let builder = StringBuilder::new()
+  let builder = StringBuilder()
   builder.write_string("volume,conversion,outlet_temperature\n")
   for point in points {
     builder.write_string(format_double(point.volume))
@@ -63,7 +63,7 @@ pub fn sweep_to_csv(points : ArrayView[ReactorSweepPoint]) -> String {
 
 ///|
 pub fn network_to_markdown(result : NetworkResult) -> String {
-  let builder = StringBuilder::new()
+  let builder = StringBuilder()
   builder.write_string("| stage | kind | volume | conversion | temperature |\n")
   builder.write_string("| ---: | --- | ---: | ---: | ---: |\n")
   for i, stage in result.stages {
@@ -87,7 +87,7 @@ pub fn network_to_markdown(result : NetworkResult) -> String {
 
 ///|
 pub fn BenchmarkResult::to_csv_row(self : BenchmarkResult) -> String {
-  let builder = StringBuilder::new()
+  let builder = StringBuilder()
   builder.write_string(self.id)
   builder.write_string(",")
   builder.write_string(format_double(self.actual, digits=10))

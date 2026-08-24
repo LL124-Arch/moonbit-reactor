@@ -93,7 +93,7 @@ pub fn benchmark_results() -> Array[BenchmarkResult] {
 
 ///|
 pub fn benchmark_report_markdown() -> String {
-  let builder = StringBuilder::new()
+  let builder = StringBuilder()
   builder.write_string("# moonbit-reactor benchmark report\n\n")
   builder.write_string(
     "| id | actual | expected | absolute error | tolerance | status |\n",
@@ -119,7 +119,7 @@ pub fn benchmark_report_markdown() -> String {
 
 ///|
 pub fn benchmark_report_csv() -> String {
-  let builder = StringBuilder::new()
+  let builder = StringBuilder()
   builder.write_string(
     "id,actual,expected,absolute_error,tolerance,passed,source_url\n",
   )
